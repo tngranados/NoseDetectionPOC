@@ -14,6 +14,8 @@
 		6CE2AAF0288FEC1500402119 /* CameraTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AAEF288FEC1500402119 /* CameraTests.swift */; };
 		6CE2AAFA288FEC1600402119 /* CameraUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AAF9288FEC1600402119 /* CameraUITests.swift */; };
 		6CE2AAFC288FEC1600402119 /* CameraUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AAFB288FEC1600402119 /* CameraUITestsLaunchTests.swift */; };
+		6CE2AB09288FED0500402119 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AB08288FED0500402119 /* CameraViewModel.swift */; };
+		6CE2AB0B288FEDF600402119 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AB0A288FEDF600402119 /* PreviewView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		6CE2AAF5288FEC1600402119 /* CameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CE2AAF9288FEC1600402119 /* CameraUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUITests.swift; sourceTree = "<group>"; };
 		6CE2AAFB288FEC1600402119 /* CameraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		6CE2AB08288FED0500402119 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
+		6CE2AB0A288FEDF600402119 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,8 @@
 			children = (
 				6CE2AADE288FEC1500402119 /* CameraApp.swift */,
 				6CE2AAE0288FEC1500402119 /* CameraView.swift */,
+				6CE2AB08288FED0500402119 /* CameraViewModel.swift */,
+				6CE2AB0A288FEDF600402119 /* PreviewView.swift */,
 				6CE2AAE2288FEC1500402119 /* Assets.xcassets */,
 				6CE2AAE4288FEC1500402119 /* Preview Content */,
 			);
@@ -258,7 +264,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6CE2AAE1288FEC1500402119 /* CameraView.swift in Sources */,
+				6CE2AB0B288FEDF600402119 /* PreviewView.swift in Sources */,
 				6CE2AADF288FEC1500402119 /* CameraApp.swift in Sources */,
+				6CE2AB09288FED0500402119 /* CameraViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,6 +428,7 @@
 				DEVELOPMENT_TEAM = TX2B772MQ3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "A camera app need to use the camera, duh";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -449,6 +458,7 @@
 				DEVELOPMENT_TEAM = TX2B772MQ3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "A camera app need to use the camera, duh";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

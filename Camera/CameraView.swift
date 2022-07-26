@@ -6,16 +6,40 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct CameraView: View {
-    var body: some View {
-        Text("Hello, world!")
-            .padding()
+    @ObservedObject var viewModel: CameraViewModel
+    
+    init(viewModel: CameraViewModel) {
+        self.viewModel = viewModel
     }
-}
+    
+    var body: some View {
+        ZStack {
+            Color.black
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        CameraView()
+            viewModel.preview
+                .onTapGesture {
+                    viewModel.capturePhoto()
+                }
+            
+            VStack {
+                Spacer()
+                
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(viewModel.capturedPhotos, id: \.self) { photo in
+                            Image(uiImage: photo)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 80)
+                        }
+                    }
+                    .padding()
+                }
+            }
+            .padding(.bottom, 50)
+        }
     }
 }
