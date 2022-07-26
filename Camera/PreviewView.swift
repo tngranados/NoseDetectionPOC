@@ -8,13 +8,15 @@
 import SwiftUI
 import UIKit
 import AVFoundation
+import Vision
 
-class PreviewView: UIView, AVCapturePhotoCaptureDelegate {
+class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
 //    private var delegate: CameraViewDelegate?
 
     private var captureSession: AVCaptureSession?
     private var videoDeviceInput: AVCaptureDeviceInput?
     private var photoOutput: AVCapturePhotoOutput?
+    private var videoOutput: AVCaptureVideoDataOutput?
     private var viewModel: CameraViewModel
 
     var videoPreviewLayer: AVCaptureVideoPreviewLayer {
@@ -63,8 +65,8 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate {
         session.addInput(videoDeviceInput!)
 
         self.photoOutput = AVCapturePhotoOutput()
-        photoOutput!.isHighResolutionCaptureEnabled = true
-        photoOutput!.isLivePhotoCaptureEnabled = photoOutput!.isLivePhotoCaptureSupported
+        photoOutput!.isHighResolutionCaptureEnabled = false
+        photoOutput!.isLivePhotoCaptureEnabled = false
 
         guard session.canAddOutput(photoOutput!) else {
 //            delegate?.noCameraDetected()
@@ -73,6 +75,14 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate {
         }
         session.sessionPreset = .photo
         session.addOutput(photoOutput!)
+
+        self.videoOutput = AVCaptureVideoDataOutput()
+        self.videoOutput?.videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString): NSNumber(value: kCVPixelFormatType_32BGRA)] as [String: Any]
+        self.videoOutput?.setSampleBufferDelegate(self, queue: DispatchQueue(label: "camera queue"))
+
+        session.addOutput(videoOutput!)
+
+        self.videoOutput?.connection(with: .video)?.videoOrientation = .portrait
 
         session.commitConfiguration()
 
@@ -109,7 +119,7 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate {
         } else {
             photoSettings = AVCapturePhotoSettings()
         }
-        photoSettings.flashMode = .auto
+        photoSettings.flashMode = .off
         self.photoOutput?.capturePhoto(with: photoSettings, delegate: self)
     }
 
@@ -126,6 +136,60 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate {
             viewModel.capturedPhotos.insert(image, at: 0)
         } else {
             viewModel.capturedPhotoError = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "error"])
+        }
+    }
+
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+
+        let faceDetectionRequest = VNDetectFaceLandmarksRequest { request, error in
+            DispatchQueue.main.async {
+                self.viewModel.faceLayers.forEach { $0.removeFromSuperlayer() }
+
+                if let results = request.results as? [VNFaceObservation] {
+                    for result in results {
+                        guard let landmarks = result.landmarks,
+                              let nose = landmarks.nose else { return }
+
+                        let faceRectConverted = self.videoPreviewLayer.layerRectConverted(fromMetadataOutputRect: result.boundingBox)
+
+                        let landmarkPath = CGMutablePath()
+                        let landmarkPathPoints = nose.normalizedPoints
+                            .map({ point in
+                                CGPoint(
+                                    x: point.y * faceRectConverted.height + faceRectConverted.origin.x,
+                                    y: point.x * faceRectConverted.width + faceRectConverted.origin.y)
+                            })
+                        landmarkPath.addLines(between: landmarkPathPoints)
+                        landmarkPath.closeSubpath()
+
+                        self.viewModel.nosePosition = landmarkPath.center
+//                        self.viewModel.nosePosition = landmarkPathPoints.first!
+
+                        let landmarkLayer = CAShapeLayer()
+                        landmarkLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 2.0 * 5, height: 2.0 * 5), cornerRadius: 10).cgPath
+                        landmarkLayer.position = landmarkPath.center
+                        landmarkLayer.fillColor = UIColor.red.cgColor
+//                        circleLayer.fillColor = UIColor.blue.cgColor
+//                        C
+
+//                        landmarkLayer.path = landmarkPath
+//                        landmarkLayer.fillColor = UIColor.clear.cgColor
+//                        landmarkLayer.strokeColor = UIColor.green.cgColor
+
+                        self.viewModel.faceLayers.append(landmarkLayer)
+                        self.layer.addSublayer(landmarkLayer)
+                    }
+                }
+            }
+        }
+
+        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: imageBuffer, orientation: .leftMirrored)
+
+        do {
+            try imageRequestHandler.perform([faceDetectionRequest])
+        } catch {
+            print(error.localizedDescription)
         }
     }
 

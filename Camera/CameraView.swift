@@ -40,6 +40,20 @@ struct CameraView: View {
                 }
             }
             .padding(.bottom, 50)
+
+            Rectangle()
+                .foregroundColor(.clear)
+                .border(.red, width: 2)
+                .frame(width: 100, height: 100).position(x: 100, y: 300)
+
+            if let nosePosition = viewModel.nosePosition {
+                VStack {
+                    Spacer().frame(height: 50)
+                    Text("Nose x: \(nosePosition.x), y: \(nosePosition.y)")
+                        .foregroundColor(.white)
+                    Spacer()
+                }
+            }
         }
     }
 }

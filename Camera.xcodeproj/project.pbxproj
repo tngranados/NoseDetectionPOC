@@ -16,6 +16,7 @@
 		6CE2AAFC288FEC1600402119 /* CameraUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AAFB288FEC1600402119 /* CameraUITestsLaunchTests.swift */; };
 		6CE2AB09288FED0500402119 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AB08288FED0500402119 /* CameraViewModel.swift */; };
 		6CE2AB0B288FEDF600402119 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AB0A288FEDF600402119 /* PreviewView.swift */; };
+		6CE2AB0D289025D000402119 /* CGPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE2AB0C289025D000402119 /* CGPath+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		6CE2AAFB288FEC1600402119 /* CameraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		6CE2AB08288FED0500402119 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		6CE2AB0A288FEDF600402119 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
+		6CE2AB0C289025D000402119 /* CGPath+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPath+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				6CE2AAE0288FEC1500402119 /* CameraView.swift */,
 				6CE2AB08288FED0500402119 /* CameraViewModel.swift */,
 				6CE2AB0A288FEDF600402119 /* PreviewView.swift */,
+				6CE2AB0C289025D000402119 /* CGPath+Extensions.swift */,
 				6CE2AAE2288FEC1500402119 /* Assets.xcassets */,
 				6CE2AAE4288FEC1500402119 /* Preview Content */,
 			);
@@ -266,6 +269,7 @@
 				6CE2AAE1288FEC1500402119 /* CameraView.swift in Sources */,
 				6CE2AB0B288FEDF600402119 /* PreviewView.swift in Sources */,
 				6CE2AADF288FEC1500402119 /* CameraApp.swift in Sources */,
+				6CE2AB0D289025D000402119 /* CGPath+Extensions.swift in Sources */,
 				6CE2AB09288FED0500402119 /* CameraViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
