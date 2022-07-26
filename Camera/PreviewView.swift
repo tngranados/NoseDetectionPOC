@@ -11,8 +11,6 @@ import AVFoundation
 import Vision
 
 class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
-//    private var delegate: CameraViewDelegate?
-
     private var captureSession: AVCaptureSession?
     private var videoDeviceInput: AVCaptureDeviceInput?
     private var photoOutput: AVCapturePhotoOutput?
@@ -24,15 +22,12 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutp
     }
 
     init(
-        //delegate: CameraViewDelegate? = nil,
         viewModel: CameraViewModel,
         cameraType: AVCaptureDevice.DeviceType = .builtInWideAngleCamera,
         cameraPosition: AVCaptureDevice.Position = .back) {
 
         self.viewModel = viewModel
         super.init(frame: .zero)
-
-//        self.delegate = delegate
 
         var accessAllowed = false
 
@@ -41,14 +36,12 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutp
 
         AVCaptureDevice.requestAccess(for: .video) { (flag) in
             accessAllowed = true
-//            delegate?.cameraAccessGranted()
             blocker.leave()
         }
 
         blocker.wait()
 
         if !accessAllowed {
-//            delegate?.cameraAccessDenied()
             return
         }
 
@@ -58,7 +51,6 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutp
                                                   for: .video, position: cameraPosition)
 
         guard videoDevice != nil, let deviceInput = try? AVCaptureDeviceInput(device: videoDevice!), session.canAddInput(deviceInput) else {
-//            delegate?.noCameraDetected()
             return
         }
         self.videoDeviceInput = deviceInput
@@ -69,7 +61,6 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutp
         photoOutput!.isLivePhotoCaptureEnabled = false
 
         guard session.canAddOutput(photoOutput!) else {
-//            delegate?.noCameraDetected()
             return
 
         }
@@ -87,7 +78,6 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutp
         session.commitConfiguration()
 
         self.captureSession = session
-//        delegate?.cameraSessionStarted()
         self.captureSession?.startRunning()
     }
 
@@ -164,18 +154,11 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutp
                         landmarkPath.closeSubpath()
 
                         self.viewModel.nosePosition = landmarkPath.center
-//                        self.viewModel.nosePosition = landmarkPathPoints.first!
 
                         let landmarkLayer = CAShapeLayer()
                         landmarkLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 2.0 * 5, height: 2.0 * 5), cornerRadius: 10).cgPath
                         landmarkLayer.position = landmarkPath.center
                         landmarkLayer.fillColor = UIColor.red.cgColor
-//                        circleLayer.fillColor = UIColor.blue.cgColor
-//                        C
-
-//                        landmarkLayer.path = landmarkPath
-//                        landmarkLayer.fillColor = UIColor.clear.cgColor
-//                        landmarkLayer.strokeColor = UIColor.green.cgColor
 
                         self.viewModel.faceLayers.append(landmarkLayer)
                         self.layer.addSublayer(landmarkLayer)
@@ -199,7 +182,6 @@ class PreviewView: UIView, AVCapturePhotoCaptureDelegate, AVCaptureVideoDataOutp
 }
 
 struct PreviewHolder: UIViewRepresentable {
-//    private var delegate: CameraViewDelegate?
     @ObservedObject var viewModel: CameraViewModel
 
     private var cameraType: AVCaptureDevice.DeviceType
@@ -207,13 +189,10 @@ struct PreviewHolder: UIViewRepresentable {
     private var view: PreviewView
 
     init(
-//        delegate: CameraViewDelegate? = nil,
         viewModel: CameraViewModel,
         cameraType: AVCaptureDevice.DeviceType = .builtInWideAngleCamera, cameraPosition: AVCaptureDevice.Position = .back) {
-//        self.delegate = delegate
         self.cameraType = cameraType
         self.cameraPosition = cameraPosition
-//        self.view = PreviewView(delegate: delegate, cameraType: cameraType, cameraPosition: cameraPosition)
         self.viewModel = viewModel
         self.view = PreviewView(viewModel: viewModel, cameraType: cameraType, cameraPosition: cameraPosition)
         viewModel.preview = self
